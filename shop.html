@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Koleksi Busana Syari — Makka Always Syari</title>
+  <meta name="description" content="Makka Always Syari — Koleksi busana syar'i premium abaya & gamis" />
+  <meta name="theme-color" content="#4F46E5" />
+  <link rel="shortcut icon" href="assets/img/logo.jpg" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Outfit:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Top utility strip -->
+  <div class="utility">
+    <div class="container">
+      <span class="promo">
+        <span class="tag">PROMO</span>
+        Buka setiap hari 07.00 - 17.00 WIB. Melayani pengiriman ke seluruh Indonesia.
+      </span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.jpg" alt="Logo" style="width: 50px;">
+        Makka Always syar'i
+      </a>
+
+      <form class="search" role="search" onsubmit="event.preventDefault();">
+        <input type="text" placeholder="Cari produk abaya, daily dress..." aria-label="Search the store" />
+        <button type="submit" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+          </svg>
+        </button>
+      </form>
+
+      <div class="icon-row">
+        <a href="cart.html" class="icon-btn icon-btn--cart" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2l-2 5v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7l-2-5z" />
+            <path d="M4 7h16" />
+            <path d="M16 11a4 4 0 0 1-8 0" />
+          </svg>
+          <span class="count">0</span>
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">≡</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-bar" aria-label="Primary">
+    <div class="container">
+      <a href="shop.html" class="all-cats">
+        Semua Kategori
+      </a>
+      <div class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html" aria-current="page">Products</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <span class="nav-cta">KOLEKSI SYAR'I <strong>PREMIUM &amp; ELEGAN</strong></span>
+    </div>
+  </nav>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <a href="index.html" class="brand">Makka Always Syari</a>
+      <button class="drawer-close">Close ✕</button>
+    </div>
+    <a href="index.html">Home</a><a href="shop.html">Products</a><a href="contact.html">Contact</a>
+  </div>
+
+  <main id="main">
+
+    <!-- PAGE HEAD -->
+    <section class="page-head">
+      <div class="container">
+        <div class="crumbs">
+          <a href="index.html">Beranda</a> <span class="sep">›</span> <span>Semua Produk</span>
+        </div>
+        <h1>Koleksi Busana Syari Makka</h1>
+        <p>Jelajahi seluruh koleksi Abaya, Gamis, &amp; Daily Dress eksklusif Makka.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="shop-layout">
+
+          <!-- SIDEBAR FILTERS -->
+          <aside class="filters" aria-label="Filters">
+            <div class="filter-block">
+              <h3>Kategori Produk</h3>
+              <label><input type="checkbox" class="filter-category" value="abaya" checked
+                  onchange="applyProductFilters()"> Abaya Series</label>
+              <label><input type="checkbox" class="filter-category" value="eid-series" checked
+                  onchange="applyProductFilters()"> Eid / Raya Series</label>
+              <label><input type="checkbox" class="filter-category" value="daily" checked
+                  onchange="applyProductFilters()"> Daily Dress</label>
+            </div>
+
+            <div class="filter-block">
+              <h3>Kisaran Harga</h3>
+              <input type="range" id="priceRange" min="0" max="1000000" step="25000" value="1000000"
+                style="width: 100%;" oninput="updatePriceLabel(this.value)" onchange="applyProductFilters()">
+              <div style="display:flex; justify-content:space-between; font-size:var(--text-xs); margin-top:4px;">
+                <span>Maksimal:</span><span id="priceLabel">Rp 1.000.000</span>
+              </div>
+            </div>
+
+            <button onclick="resetFilters()" class="btn btn--block"
+              style="margin-top: 8px; border: 1px solid var(--rule); cursor:pointer;">Reset Filter</button>
+          </aside>
+
+          <!-- MAIN PRODUCT CATALOG -->
+          <div>
+            <div class="shop-toolbar">
+              <span class="count" id="productCount">Menampilkan produk...</span>
+              <select id="sortSelect" onchange="applyProductFilters()">
+                <option value="popular">Urutan Default</option>
+                <option value="price-low">Harga: Rendah ke Tinggi</option>
+                <option value="price-high">Harga: Tinggi ke Rendah</option>
+              </select>
+            </div>
+
+            <!-- PRODUCT GRID (Langsung terisi seketika tanpa loading) -->
+            <div class="shop-grid" id="productGrid"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="mark"><span class="brand-mark">M</span> Makka Always Syari</div>
+          <p>Tampil Syari, Tetap Stylist dan Nyaman Seharian.</p>
+          <div class="socials" style="margin-top:var(--s4)">
+            <a href="https://www.instagram.com/makka.always.syari/" target="_blank" aria-label="Instagram"><svg
+                width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Kategori Produk</h4>
+          <ul>
+            <li><a href="shop.html">Abaya Series</a></li>
+            <li><a href="shop.html">Raya / Eid Series</a></li>
+            <li><a href="shop.html">Daily Dress</a></li>
+            <li><a href="shop.html">Khimar &amp; Hijab Syari</a></li>
+            <li><a href="shop.html">Bahan Sultan (Anti UV)</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Layanan PO</h4>
+          <ul>
+            <li><a href="#">Cara Pre-Order (PO)</a></li>
+            <li><a href="#">Sistem Skema Cicilan</a></li>
+            <li><a href="#">Request Custom Size</a></li>
+            <li><a href="#">Request Pilihan Warna</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Koleksi Pilihan</h4>
+          <ul>
+            <li><a href="#">Reline Abaya</a></li>
+            <li><a href="#">Shibori Abaya</a></li>
+            <li><a href="#">Aleeza Eid Series</a></li>
+            <li><a href="#">Classy Daisy</a></li>
+            <li><a href="#">Jasmine Series</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Informasi &amp; Bantuan</h4>
+          <ul>
+            <li><a href="#">Tentang Makka</a></li>
+            <li><a href="contact.html">Hubungi Admin / WA</a></li>
+            <li><a href="#">Panduan Ukuran (Size Chart)</a></li>
+            <li><a href="#">Syarat &amp; Ketentuan PO</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Makka Always Syari · All rights reserved</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js" defer></script>
+
+  <script>
+    let allProducts = [];
+
+    function renderProducts(products) {
+      const grid = document.getElementById('productGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      if (!products || products.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding: 40px; color:#64748b;">Tidak ada produk yang cocok dengan filter.</p>`;
+        document.getElementById('productCount').innerText = '0 produk ditemukan';
+        return;
+      }
+
+      products.forEach(prod => {
+        const imgUrl = convertDriveUrl(prod.foto);
+        const priceText = formatRupiah(prod.harga);
+        const category = (prod.kategori || 'abaya').toLowerCase();
+        const rawPrice = parseInt(prod.harga) || 0;
+
+        let badgeHtml = '';
+        const status = (prod.status_code || '').toLowerCase();
+        if (status === 'po' || (prod.deskripsi && prod.deskripsi.toLowerCase().includes('po'))) {
+          badgeHtml = '<span class="badge">PO</span>';
+        } else if (status === 'ready') {
+          badgeHtml = '<span class="badge badge--sale">Ready</span>';
+        }
+
+        const card = document.createElement('article');
+        card.className = 'product-card';
+        card.setAttribute('data-category', category);
+        card.setAttribute('data-price', rawPrice);
+
+        const productDataJson = JSON.stringify({
+          id: prod.id,
+          nama_series: prod.nama_series,
+          harga: prod.harga,
+          berat: prod.berat || '1kg',
+          foto: prod.foto
+        }).replace(/"/g, '&quot;');
+
+        card.innerHTML = `
+          <div class="img-wrap" style="background:#f8fafc; position:relative; min-height: 250px;">
+            ${badgeHtml}
+            <button class="wishlist" aria-label="Wishlist">♡</button>
+            <a href="detailProduct.html?id=${prod.id}">
+              <img 
+                src="${imgUrl}" 
+                alt="${prod.nama_series}" 
+                loading="lazy" 
+                onerror="this.onerror=null; this.src='https://placehold.co/600x800/e2e8f0/475569?text=Makka+Syari';"
+                style="width: 100%; height: 100%; object-fit: cover;"
+              />
+            </a>
+          </div>
+          <div class="stock"><span class="dot"></span>${prod.deskripsi ? prod.deskripsi.substring(0, 32) + '...' : 'Pilihan Terbaik'}</div>
+          
+          <a href="detailProduct.html?id=${prod.id}" class="name">${prod.nama_series}</a>
+          
+          <div class="price"><span class="now">${priceText}</span></div>
+          
+          <button onclick="addToCart(${productDataJson})" class="btn" style="width:100%; cursor:pointer;">
+            + Masukkan Keranjang
+          </button>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      document.getElementById('productCount').innerText = `Menampilkan ${products.length} produk`;
+    }
+
+    function applyProductFilters() {
+      const selectedCategories = Array.from(document.querySelectorAll('.filter-category:checked')).map(cb => cb.value);
+      const maxPrice = parseInt(document.getElementById('priceRange').value, 10);
+      const sortValue = document.getElementById('sortSelect').value;
+
+      let filtered = allProducts.filter(prod => {
+        const cat = (prod.kategori || 'abaya').toLowerCase();
+        const price = parseInt(prod.harga) || 0;
+
+        const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(cat);
+        const matchPrice = price <= maxPrice;
+
+        return matchCategory && matchPrice;
+      });
+
+      if (sortValue === 'price-low') {
+        filtered.sort((a, b) => (parseInt(a.harga) || 0) - (parseInt(b.harga) || 0));
+      } else if (sortValue === 'price-high') {
+        filtered.sort((a, b) => (parseInt(b.harga) || 0) - (parseInt(a.harga) || 0));
+      }
+
+      renderProducts(filtered);
+    }
+
+    function updatePriceLabel(val) {
+      document.getElementById('priceLabel').innerText = formatRupiah(val);
+    }
+
+    function resetFilters() {
+      document.querySelectorAll('.filters input[type="checkbox"]').forEach(cb => cb.checked = true);
+      document.getElementById('priceRange').value = 1000000;
+      updatePriceLabel(1000000);
+      applyProductFilters();
+    }
+
+    // Inisialisasi: Render langsung dari SWR cache / snapshot (0ms loading!)
+    function initShop() {
+      allProducts = getProductsSync();
+      applyProductFilters();
+
+      // Sinkronisasi data terbaru di latar belakang secara hening
+      fetchProductsRealtime((fresh) => {
+        allProducts = fresh;
+        applyProductFilters();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initShop);
+  </script>
+</body>
+
+</html>

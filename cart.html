@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Keranjang Belanja — Makka Always Syari</title>
+  <meta name="description" content="Keranjang belanja dan checkout pesanan Makka Always Syari" />
+  <meta name="theme-color" content="#4F46E5" />
+  <link rel="shortcut icon" href="assets/img/logo.jpg" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Outfit:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Top utility strip -->
+  <div class="utility">
+    <div class="container">
+      <span class="promo">
+        <span class="tag">PROMO</span>
+        Buka setiap hari 07.00 - 17.00 WIB. Melayani pengiriman ke seluruh Indonesia via JNE Express.
+      </span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.jpg" alt="Logo" style="width: 50px;">
+        Makka Always syar'i
+      </a>
+
+      <form class="search" role="search" onsubmit="event.preventDefault();">
+        <input type="text" placeholder="Cari busana syar'i..." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+          </svg>
+        </button>
+      </form>
+
+      <div class="icon-row">
+        <a href="cart.html" class="icon-btn icon-btn--cart" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2l-2 5v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7l-2-5z" />
+            <path d="M4 7h16" />
+            <path d="M16 11a4 4 0 0 1-8 0" />
+          </svg>
+          <span class="count">0</span>
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">≡</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-bar" aria-label="Primary">
+    <div class="container">
+      <a href="shop.html" class="all-cats">Semua Kategori</a>
+      <div class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Products</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <span class="nav-cta">KOLEKSI SYAR'I <strong>PREMIUM & ELEGAN</strong></span>
+    </div>
+  </nav>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <a href="index.html" class="brand">Makka Always Syari</a>
+      <button class="drawer-close">Close ✕</button>
+    </div>
+    <a href="index.html">Home</a><a href="shop.html">Products</a><a href="contact.html">Contact</a>
+  </div>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <div class="crumbs"><a href="index.html">Home</a> <span class="sep">›</span> <span>Keranjang Belanja</span>
+        </div>
+        <h1>Keranjang Anda</h1>
+        <p id="cartSummarySubtitle">Memuat item keranjang...</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cart-layout">
+
+          <!-- DAFTAR ITEM KERANJANG DINAMIS -->
+          <div>
+            <div class="cart-list" id="cartList">
+              <!-- Item akan terisi otomatis oleh JS -->
+            </div>
+
+            <div style="margin-top: var(--s5); display: flex; gap: var(--s3); flex-wrap: wrap">
+              <a href="shop.html" class="btn btn--ghost">← Lanjut Belanja</a>
+              <button onclick="clearCart()" class="btn btn--ghost" style="color:var(--rose); cursor:pointer;">Kosongkan
+                Keranjang</button>
+            </div>
+          </div>
+          
+          <!-- SUMMARY ORDER & WA CHECKOUT -->
+          <aside class="cart-summary"
+            style="background:#fff; border:1px solid #e2e8f0; padding:20px; border-radius:12px;">
+            <h3 style="margin-bottom:16px;">Ringkasan & Form Pengiriman</h3>
+
+            <!-- FORM DATA PEMESAN & ALAMAT -->
+            <div class="checkout-fields" style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+
+              <!-- NAMA PEMESAN -->
+              <div>
+                <label for="custName" style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Nama
+                  Pemesan *</label>
+                <input type="text" id="custName" name="custName" placeholder="Contoh: Aisyah Humaira"
+                  style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;" required>
+              </div>
+
+              <!-- NOMOR WHATSAPP -->
+              <div>
+                <label for="custPhone" style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Nomor
+                  WhatsApp *</label>
+                <input type="tel" id="custPhone" name="custPhone" placeholder="Contoh: 08123456789"
+                  style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;" required>
+              </div>
+
+              <!-- KOTA / KABUPATEN (INPUT UTAMA HITUNG ONGKIR) -->
+              <div>
+                <label for="custCity" style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Kota /
+                  Kabupaten *</label>
+                <input type="text" id="custCity" name="custCity"
+                  placeholder="Ketik Kota/Kab (Contoh: Jakarta Barat, Depok, Bandung)"
+                  oninput="handleCityInput(this.value)" onblur="handleCityInput(this.value)"
+                  onchange="handleCityInput(this.value)"
+                  style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;" required>
+
+                <!-- Loading Indicator -->
+                <div id="zipLoading"
+                  style="display:none; font-size:12px; color:#4F46E5; margin-top:4px; font-weight:600;">
+                  ⏳ Mencari kota & menghitung ongkir JNE...
+                </div>
+
+                <!-- Hidden Input ID Kota RajaOngkir -->
+                <input type="hidden" id="custCityId">
+              </div>
+
+              <!-- KECAMATAN & KELURAHAN -->
+              <div>
+                <label for="custSubdistrict"
+                  style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Kecamatan & Kelurahan
+                  *</label>
+                <input type="text" id="custSubdistrict" name="custSubdistrict" placeholder="Contoh: Cipayung"
+                  style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;" required>
+              </div>
+
+              <!-- ALAMAT LENGKAP -->
+              <div>
+                <label for="custAddress"
+                  style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Alamat Lengkap (RT/RW,
+                  Jalan, No. Rumah, Blok) *</label>
+                <textarea id="custAddress" name="custAddress" rows="2" placeholder="Jl. Zeni TNI AD No. 12"
+                  style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;"
+                  required></textarea>
+              </div>
+
+              <!-- KODE POS -->
+              <div>
+                <label for="custZip" style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Kode
+                  Pos</label>
+                <input type="text" id="custZip" name="custZip" placeholder="Contoh: 16437" maxlength="5"
+                  style="width:100%; padding:8px 12px; border:1px solid #cbd5e1; border-radius:6px;">
+              </div>
+
+              <!-- EKSPEDISI (KHUSUS JNE EXPRESS) -->
+              <div>
+                <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">
+                  Ekspedisi Pengiriman
+                </label>
+                <div style="display:flex; align-items:center; gap:8px; padding:10px 12px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px; font-size:13px; font-weight:600; color:#334155;">
+                  <span>🚚 JNE Express (Layanan Reguler)</span>
+                  <span style="margin-left:auto; font-size:11px; background:#e0e7ff; color:#4338ca; padding:2px 8px; border-radius:999px;">Tersedia</span>
+                </div>
+              </div>
+            </div>
+
+            <hr style="border:none; border-top:1px solid #e2e8f0; margin:16px 0;">
+
+            <!-- RINCIAN BIAYA -->
+            <div class="cart-line" style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span>Total Item</span>
+              <span id="summaryTotalQty">0 Item</span>
+            </div>
+
+            <div class="cart-line" style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span>Subtotal Produk</span>
+              <span id="summarySubtotalPrice">Rp 0</span>
+            </div>
+
+            <div class="cart-line" style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span>Estimasi Ongkir JNE (dari Depok)</span>
+              <span id="summaryShippingPrice" style="font-weight:600; color:#4F46E5;">Rp 0 (Ketik Kota/Kab)</span>
+            </div>
+
+            <div class="cart-line is-total"
+              style="display:flex; justify-content:space-between; font-weight:700; font-size:16px; margin-top:12px; padding-top:8px; border-top:2px dashed #cbd5e1;">
+              <span>Total Biaya</span>
+              <span id="summaryTotalPrice" style="color:#4F46E5;">Rp 0</span>
+            </div>
+
+            <!-- CATATAN ESTIMASI ONGKIR -->
+            <p style="font-size:11px; color:#64748b; margin-top:8px; line-height:1.4;">
+              * <i>Ongkir dihitung otomatis real-time (JNE Express) sesuai berat total pesanan Anda.</i>
+            </p>
+
+            <button id="btnCheckoutWA" onclick="checkoutToWhatsApp()" class="btn btn--indigo btn--block"
+              style="margin-top:20px; width:100%; padding:14px; background:#25D366; border:none; color:white; font-weight:700; border-radius:8px; cursor:pointer;">
+              Checkout via WhatsApp →
+            </button>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" style="margin-top: 60px;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="mark"><span class="brand-mark">M</span> Makka Always Syari</div>
+          <p>Tampil Syari, Tetap Stylist dan Nyaman Seharian.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Kategori Produk</h4>
+          <ul>
+            <li><a href="shop.html">Abaya Series</a></li>
+            <li><a href="shop.html">Raya / Eid Series</a></li>
+            <li><a href="shop.html">Daily Dress</a></li>
+            <li><a href="shop.html">Khimar &amp; Hijab Syari</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Layanan PO</h4>
+          <ul>
+            <li><a href="#">Cara Pre-Order (PO)</a></li>
+            <li><a href="#">Request Custom Size</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Informasi &amp; Bantuan</h4>
+          <ul>
+            <li><a href="contact.html">Hubungi Admin / WA</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Makka Always Syari · All rights reserved</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/cart.js"></script>
+</body>
+
+</html>

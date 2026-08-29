@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detail Produk — Makka Always Syari</title>
+  <meta name="description" content="Koleksi busana syar'i premium dari Makka Always Syari." />
+  <meta name="theme-color" content="#4F46E5" />
+  <link rel="shortcut icon" href="assets/img/logo.jpg" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Outfit:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Top utility strip -->
+  <div class="utility">
+    <div class="container">
+      <span class="promo">
+        <span class="tag">PROMO</span>
+        Buka setiap hari 07.00 - 17.00 WIB. Melayani pengiriman ke seluruh Indonesia via JNE Express.
+      </span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <img src="assets/img/logo.jpg" alt="Logo" style="width: 50px;">
+        Makka Always syar'i
+      </a>
+
+      <form class="search" role="search" onsubmit="event.preventDefault();">
+        <input type="text" placeholder="Cari busana syar'i..." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.3-4.3" />
+          </svg>
+        </button>
+      </form>
+
+      <div class="icon-row">
+        <a href="cart.html" class="icon-btn icon-btn--cart" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2l-2 5v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7l-2-5z" />
+            <path d="M4 7h16" />
+            <path d="M16 11a4 4 0 0 1-8 0" />
+          </svg>
+          <span class="count">0</span>
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">≡</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-bar" aria-label="Primary">
+    <div class="container">
+      <a href="shop.html" class="all-cats">Semua Kategori</a>
+      <div class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Products</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <span class="nav-cta">KOLEKSI SYAR'I <strong>PREMIUM &amp; ELEGAN</strong></span>
+    </div>
+  </nav>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <a href="index.html" class="brand">Makka Always Syari</a>
+      <button class="drawer-close">Close ✕</button>
+    </div>
+    <a href="index.html">Home</a><a href="shop.html">Products</a><a href="contact.html">Contact</a>
+  </div>
+
+  <main id="main">
+    <div class="container">
+      <div class="crumbs" style="padding-top: var(--s5)">
+        <a href="index.html">Home</a> <span class="sep">›</span>
+        <a href="shop.html">Shop</a> <span class="sep">›</span>
+        <span id="pdpBreadcrumb">Detail Produk</span>
+      </div>
+
+      <section class="product-detail" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; margin-top: 20px;">
+
+        <!-- GALERI FOTO -->
+        <div class="gallery">
+          <div class="gallery-thumbs" id="pdpThumbs" style="margin-bottom: 12px;">
+            <button class="is-active" style="border:1px solid #cbd5e1; background:none; padding:2px; border-radius:6px; cursor:pointer;">
+              <img id="thumbImg" src="https://placehold.co/200x200/e2e8f0/475569?text=Makka" alt="Thumbnail" style="width: 64px; height: 64px; object-fit: cover; border-radius: 4px;" />
+            </button>
+          </div>
+          <figure class="gallery-main" style="margin:0;">
+            <img id="pdpMainImg" src="https://placehold.co/600x800/e2e8f0/475569?text=Makka+Syari" alt="Produk" style="width: 100%; max-height: 550px; object-fit: cover; border-radius: 8px;" />
+          </figure>
+        </div>
+
+        <!-- INFORMASI PRODUK -->
+        <div class="pdp-info">
+          <span class="pdp-cat" id="pdpCategory" style="font-weight: 600; color: #4F46E5; font-size: 14px;">⚡ Busana Syar'i · Premium Series</span>
+          <h1 id="pdpTitle" style="margin: 8px 0;">Nama Produk</h1>
+
+          <div class="rating-row" style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+            <span style="color: #f59e0b; font-size: 16px">★★★★★</span>
+            <span>5.0 / 5</span>
+            <span>|</span>
+            <span id="pdpStatus" style="display:inline-flex; align-items:center; gap:6px;">
+              Pilihan Terbaik
+            </span>
+          </div>
+
+          <p class="desc" id="pdpDesc" style="line-height: 1.6; color: #4b5563; margin-bottom: 16px;">Deskripsi produk...</p>
+
+          <div class="price-row" style="margin-bottom: 20px;">
+            <span class="now" id="pdpPrice" style="font-size: 28px; font-weight: 800; color: #111827;">Rp 0</span>
+            <span id="pdpWeight" style="display: inline-block; margin-left: 12px; font-size: 14px; color: #6b7280; font-weight: 500;">(Berat: 1 kg)</span>
+          </div>
+
+          <!-- OPSI PILIHAN PRODUK (SIZE, COLOR, QTY) -->
+          <div class="pdp-options" style="border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; padding: 16px 0; margin-bottom: 20px;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <!-- Size -->
+              <div style="flex: 1; min-width: 120px;">
+                <label for="sizeSelect" style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Pilih Ukuran:</label>
+                <select id="sizeSelect" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #d1d5db;">
+                  <option value="All Size">All Size</option>
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                  <option value="Request Custom Size">Request Custom Size</option>
+                </select>
+              </div>
+
+              <!-- Qty -->
+              <div style="width: 100px;">
+                <label for="qtyInput" style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Jumlah:</label>
+                <input type="number" id="qtyInput" value="1" min="1" max="99" style="width: 100%; padding: 9px; border-radius: 6px; border: 1px solid #d1d5db; text-align: center;">
+              </div>
+            </div>
+          </div>
+
+          <!-- TOMBOL AKSI / KERANJANG & WA -->
+          <div class="pdp-cta" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button id="btnAddToCart" class="btn btn--indigo" style="flex: 2; padding: 14px; font-weight: 700; cursor: pointer;">
+              + Tambah ke Keranjang
+            </button>
+            <a href="#" id="btnDirectWA" target="_blank" class="btn" style="flex: 1; min-width: 140px; text-align: center; padding: 14px; background-color: #25D366; color: white; border-radius: 6px; font-weight: 600; text-decoration: none;">
+              Chat WA Admin
+            </a>
+          </div>
+
+          <!-- KEUNGGULAN PRODUK -->
+          <div class="pdp-features" style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 13px; color: #374151;">
+            <div class="pf"><span class="ic">✨</span><span>Bahan Premium &amp; Nyaman</span></div>
+            <div class="pf"><span class="ic">✂️</span><span>Bisa Request Ukuran (Custom Size)</span></div>
+            <div class="pf"><span class="ic">🚚</span><span>Pengiriman JNE ke Seluruh Indonesia</span></div>
+            <div class="pf"><span class="ic">✓</span><span>100% Original Makka Always Syari</span></div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" style="margin-top: 60px;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="mark"><span class="brand-mark">M</span> Makka Always Syari</div>
+          <p>Tampil Syari, Tetap Stylist dan Nyaman Seharian.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Kategori Produk</h4>
+          <ul>
+            <li><a href="shop.html">Abaya Series</a></li>
+            <li><a href="shop.html">Raya / Eid Series</a></li>
+            <li><a href="shop.html">Daily Dress</a></li>
+            <li><a href="shop.html">Khimar &amp; Hijab Syari</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Layanan PO</h4>
+          <ul>
+            <li><a href="#">Cara Pre-Order (PO)</a></li>
+            <li><a href="#">Request Custom Size</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Informasi &amp; Bantuan</h4>
+          <ul>
+            <li><a href="contact.html">Hubungi Admin / WA</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Makka Always Syari · All rights reserved</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js" defer></script>
+
+  <script>
+    let currentProdData = null;
+
+    function renderProductDetails(prod) {
+      if (!prod) return;
+      currentProdData = prod;
+
+      // 1. Title & Breadcrumb
+      document.title = `${prod.nama_series} — Makka Always Syari`;
+      const breadcrumb = document.getElementById('pdpBreadcrumb');
+      if (breadcrumb) breadcrumb.innerText = prod.nama_series;
+
+      // 2. Foto Utama & Thumbnail
+      const imgUrl = convertDriveUrl(prod.foto);
+      const mainImg = document.getElementById('pdpMainImg');
+      const thumbImg = document.getElementById('thumbImg');
+      if (mainImg) {
+        mainImg.src = imgUrl;
+        mainImg.alt = prod.nama_series;
+      }
+      if (thumbImg) {
+        thumbImg.src = imgUrl;
+      }
+
+      // 3. Nama, Deskripsi, Harga & Berat
+      const title = document.getElementById('pdpTitle');
+      const cat = document.getElementById('pdpCategory');
+      const desc = document.getElementById('pdpDesc');
+      const price = document.getElementById('pdpPrice');
+      const weight = document.getElementById('pdpWeight');
+
+      if (title) title.innerText = prod.nama_series;
+      if (cat) cat.innerText = `⚡ ${prod.kategori ? prod.kategori.toUpperCase() : 'ABAYA'} · Premium Series`;
+      if (desc) desc.innerText = prod.deskripsi || "Busana syar'i bermaterial premium yang sangat nyaman, adem, dan anggun untuk dipakai aktivitas harian maupun acara spesial.";
+      if (price) price.innerText = formatRupiah(prod.harga);
+      if (weight) weight.innerText = `(Berat: ${prod.berat || '1kg'})`;
+
+      // 4. Status PO / Ready
+      const status = (prod.status_code || '').toLowerCase();
+      const statusEl = document.getElementById('pdpStatus');
+      if (statusEl) {
+        if (status === 'po' || (prod.deskripsi && prod.deskripsi.toLowerCase().includes('po'))) {
+          statusEl.innerHTML = `<span style="width:8px;height:8px;background:#f59e0b;border-radius:999px;display:inline-block"></span> Sistem Pre-Order (PO)`;
+        } else {
+          statusEl.innerHTML = `<span style="width:8px;height:8px;background:#10b981;border-radius:999px;display:inline-block"></span> Ready Stock`;
+        }
+      }
+
+      // 5. Update Link Direct Chat WhatsApp
+      const adminWA = "6282113145513";
+      const textMessage = encodeURIComponent(`Halo Admin Makka Always Syari, saya tertarik dan ingin konsultasi/order produk *${prod.nama_series}* (${formatRupiah(prod.harga)}). Mohon info ketersediaannya. Terima kasih!`);
+      const btnDirectWA = document.getElementById('btnDirectWA');
+      if (btnDirectWA) {
+        btnDirectWA.href = `https://wa.me/${adminWA}?text=${textMessage}`;
+      }
+    }
+
+    function initProductDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id') || '1';
+
+      // 1. Ambil data produk seketika tanpa loading
+      const products = getProductsSync();
+      const found = products.find(p => String(p.id) === String(productId));
+
+      if (found) {
+        renderProductDetails(found);
+      } else {
+        document.querySelector('#main .container').innerHTML = `
+          <div style="text-align:center; padding: 80px 0;">
+            <h2>Maaf, Produk Tidak Ditemukan!</h2>
+            <a href="shop.html" class="btn btn--indigo" style="margin-top:20px; display:inline-block;">Kembali ke Katalog</a>
+          </div>
+        `;
+        return;
+      }
+
+      // 2. Background sync dari Google Sheets
+      fetchProductsRealtime((freshList) => {
+        const freshFound = freshList.find(p => String(p.id) === String(productId));
+        if (freshFound) {
+          renderProductDetails(freshFound);
+        }
+      });
+    }
+
+    // Tombol Tambah ke Keranjang
+    document.getElementById('btnAddToCart').addEventListener('click', () => {
+      if (!currentProdData) {
+        alert("Data produk belum siap, silakan coba beberapa saat lagi.");
+        return;
+      }
+
+      const selectedSize = document.getElementById('sizeSelect')?.value || 'All Size';
+      const selectedQty = parseInt(document.getElementById('qtyInput')?.value) || 1;
+
+      addToCart(currentProdData, selectedQty, selectedSize, 'Standard');
+    });
+
+    document.addEventListener('DOMContentLoaded', initProductDetail);
+  </script>
+</body>
+
+</html>
