@@ -131,15 +131,11 @@
               <!-- Size -->
               <div style="flex: 1; min-width: 120px;">
                 <label for="sizeSelect" style="display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Pilih Ukuran:</label>
-                <select id="sizeSelect" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #d1d5db;">
-                  <option value="All Size">All Size</option>
-                  <option value="XS">XS</option>
+                <select id="sizeSelect" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #d1d5db;" onchange="updateSelectedVariantPrice()">
                   <option value="S">S</option>
                   <option value="M">M</option>
                   <option value="L">L</option>
                   <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                  <option value="Request Custom Size">Request Custom Size</option>
                 </select>
               </div>
 
@@ -217,6 +213,28 @@
 
   <script>
     let currentProdData = null;
+    let currentSelectedPrice = 0;
+
+    function updateSelectedVariantPrice() {
+      if (!currentProdData) return;
+      const sizeSelect = document.getElementById('sizeSelect');
+      const selectedSize = sizeSelect ? sizeSelect.value : 'S';
+      
+      currentSelectedPrice = getVariantPrice(currentProdData, selectedSize);
+
+      const priceEl = document.getElementById('pdpPrice');
+      if (priceEl) {
+        priceEl.innerText = formatRupiah(currentSelectedPrice);
+      }
+
+      // Update link WA Admin
+      const adminWA = "6282113145513";
+      const textMessage = encodeURIComponent(`Halo Admin Makka Always Syari, saya tertarik dan ingin pesan produk *${currentProdData.nama_series}* (Ukuran: ${selectedSize}, ${formatRupiah(currentSelectedPrice)}). Mohon info ketersediaannya. Terima kasih!`);
+      const btnDirectWA = document.getElementById('btnDirectWA');
+      if (btnDirectWA) {
+        btnDirectWA.href = `https://wa.me/${adminWA}?text=${textMessage}`;
+      }
+    }
 
     function renderProductDetails(prod) {
       if (!prod) return;
@@ -239,20 +257,21 @@
         thumbImg.src = imgUrl;
       }
 
-      // 3. Nama, Deskripsi, Harga & Berat
+      // 3. Nama, Deskripsi, & Berat
       const title = document.getElementById('pdpTitle');
       const cat = document.getElementById('pdpCategory');
       const desc = document.getElementById('pdpDesc');
-      const price = document.getElementById('pdpPrice');
       const weight = document.getElementById('pdpWeight');
 
       if (title) title.innerText = prod.nama_series;
       if (cat) cat.innerText = `⚡ ${prod.kategori ? prod.kategori.toUpperCase() : 'ABAYA'} · Premium Series`;
       if (desc) desc.innerText = prod.deskripsi || "Busana syar'i bermaterial premium yang sangat nyaman, adem, dan anggun untuk dipakai aktivitas harian maupun acara spesial.";
-      if (price) price.innerText = formatRupiah(prod.harga);
       if (weight) weight.innerText = `(Berat: ${prod.berat || '1kg'})`;
 
-      // 4. Status PO / Ready
+      // 4. Update dropdown size & harga otomatis
+      updateSelectedVariantPrice();
+
+      // 5. Status PO / Ready
       const status = (prod.status_code || '').toLowerCase();
       const statusEl = document.getElementById('pdpStatus');
       if (statusEl) {
@@ -261,14 +280,6 @@
         } else {
           statusEl.innerHTML = `<span style="width:8px;height:8px;background:#10b981;border-radius:999px;display:inline-block"></span> Ready Stock`;
         }
-      }
-
-      // 5. Update Link Direct Chat WhatsApp
-      const adminWA = "6282113145513";
-      const textMessage = encodeURIComponent(`Halo Admin Makka Always Syari, saya tertarik dan ingin konsultasi/order produk *${prod.nama_series}* (${formatRupiah(prod.harga)}). Mohon info ketersediaannya. Terima kasih!`);
-      const btnDirectWA = document.getElementById('btnDirectWA');
-      if (btnDirectWA) {
-        btnDirectWA.href = `https://wa.me/${adminWA}?text=${textMessage}`;
       }
     }
 
@@ -308,10 +319,16 @@
         return;
       }
 
-      const selectedSize = document.getElementById('sizeSelect')?.value || 'All Size';
+      const selectedSize = document.getElementById('sizeSelect')?.value || 'S';
       const selectedQty = parseInt(document.getElementById('qtyInput')?.value) || 1;
+      const finalPrice = currentSelectedPrice || getVariantPrice(currentProdData, selectedSize);
 
-      addToCart(currentProdData, selectedQty, selectedSize, 'Standard');
+      const cartProduct = {
+        ...currentProdData,
+        harga: finalPrice
+      };
+
+      addToCart(cartProduct, selectedQty, selectedSize, 'Standard');
     });
 
     document.addEventListener('DOMContentLoaded', initProductDetail);

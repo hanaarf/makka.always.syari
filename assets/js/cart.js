@@ -58,10 +58,11 @@ function saveCart(cart) {
   renderCart();
 }
 
-function addToCart(product, qty = 1, size = 'All Size', color = 'Standard') {
+function addToCart(product, qty = 1, size = 'S', color = 'Standard') {
   let cart = getCart();
   const beratInGram = parseBeratToGram(product.berat);
-  const existingIndex = cart.findIndex(item => item.id === product.id && item.size === size && item.color === color);
+  const finalPrice = product.harga ? parseInt(product.harga) : getVariantPrice(product, size);
+  const existingIndex = cart.findIndex(item => String(item.id) === String(product.id) && item.size === size && item.color === color);
 
   if (existingIndex > -1) {
     cart[existingIndex].qty += qty;
@@ -69,7 +70,7 @@ function addToCart(product, qty = 1, size = 'All Size', color = 'Standard') {
     cart.push({
       id: product.id,
       nama: product.nama_series || product.nama,
-      harga: parseInt(product.harga) || 0,
+      harga: finalPrice,
       berat: beratInGram,
       foto: product.foto,
       qty: qty,
@@ -79,7 +80,138 @@ function addToCart(product, qty = 1, size = 'All Size', color = 'Standard') {
   }
 
   saveCart(cart);
-  alert(`"${product.nama_series || product.nama}" berhasil ditambahkan ke keranjang!`);
+  alert(`"${product.nama_series || product.nama}" (Ukuran: ${size}) berhasil ditambahkan ke keranjang!`);
+}
+
+// =========================================================================
+// QUICK ADD TO CART MODAL (PILIH UKURAN S/M/L/XL DENGAN HARGA REALTIME)
+// =========================================================================
+
+let quickModalProduct = null;
+let quickModalSelectedSize = 'S';
+
+function ensureQuickModalExists() {
+  if (document.getElementById('quickAddModal')) return;
+
+  const modalHtml = `
+    <div id="quickAddModal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(15,23,42,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+      <div style="background:#ffffff; border-radius:16px; width:100%; max-width:440px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); overflow:hidden; animation:fadeInModal 0.2s ease-out;">
+        <div style="padding:16px 20px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="font-size:16px; font-weight:700; margin:0; color:#1e293b;">Pilih Ukuran</h3>
+          <button onclick="closeQuickAddModal()" style="background:none; border:none; font-size:20px; color:#94a3b8; cursor:pointer; padding:4px;">✕</button>
+        </div>
+        <div style="padding:20px;">
+          <div style="display:flex; gap:14px; margin-bottom:18px;">
+            <img id="quickModalImg" src="" alt="Produk" style="width:72px; height:72px; object-fit:cover; border-radius:10px; border:1px solid #e2e8f0;" />
+            <div style="flex:1;">
+              <h4 id="quickModalTitle" style="font-size:15px; font-weight:700; margin:0 0 4px 0; color:#0f172a;">Nama Produk</h4>
+              <div id="quickModalPrice" style="font-size:18px; font-weight:800; color:#4F46E5;">Rp 455.000</div>
+              <span id="quickModalWeight" style="font-size:12px; color:#64748b;">(Berat: 1kg)</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom:18px;">
+            <label style="display:block; font-size:13px; font-weight:600; color:#334155; margin-bottom:8px;">Pilih Ukuran:</label>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;">
+              <button type="button" class="quick-size-btn" onclick="selectQuickSize('S')" style="padding:10px; font-weight:700; border:2px solid #4F46E5; background:#EEF2FF; color:#4F46E5; border-radius:8px; cursor:pointer;">S</button>
+              <button type="button" class="quick-size-btn" onclick="selectQuickSize('M')" style="padding:10px; font-weight:700; border:1px solid #cbd5e1; background:#ffffff; color:#334155; border-radius:8px; cursor:pointer;">M</button>
+              <button type="button" class="quick-size-btn" onclick="selectQuickSize('L')" style="padding:10px; font-weight:700; border:1px solid #cbd5e1; background:#ffffff; color:#334155; border-radius:8px; cursor:pointer;">L</button>
+              <button type="button" class="quick-size-btn" onclick="selectQuickSize('XL')" style="padding:10px; font-weight:700; border:1px solid #cbd5e1; background:#ffffff; color:#334155; border-radius:8px; cursor:pointer;">XL</button>
+            </div>
+            <div id="quickSizeHint" style="font-size:12px; color:#64748b; margin-top:6px;">Ukuran S & M: harga S-M | Ukuran L & XL: harga L-XL</div>
+          </div>
+
+          <div style="margin-bottom:20px; display:flex; align-items:center; justify-content:space-between;">
+            <label style="font-size:13px; font-weight:600; color:#334155;">Jumlah:</label>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <button type="button" onclick="changeQuickQty(-1)" style="width:32px; height:32px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; font-weight:700; cursor:pointer;">−</button>
+              <input type="number" id="quickModalQty" value="1" min="1" max="99" style="width:48px; height:32px; text-align:center; border:1px solid #cbd5e1; border-radius:6px;" />
+              <button type="button" onclick="changeQuickQty(1)" style="width:32px; height:32px; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; font-weight:700; cursor:pointer;">+</button>
+            </div>
+          </div>
+
+          <button type="button" onclick="confirmQuickAddToCart()" class="btn btn--indigo" style="width:100%; padding:12px; font-weight:700; border-radius:8px; cursor:pointer; background:#4F46E5; color:white; border:none;">
+            + Masukkan ke Keranjang
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function openQuickAddToCart(product) {
+  ensureQuickModalExists();
+  quickModalProduct = product;
+  quickModalSelectedSize = 'S';
+
+  const modal = document.getElementById('quickAddModal');
+  const img = document.getElementById('quickModalImg');
+  const title = document.getElementById('quickModalTitle');
+  const weight = document.getElementById('quickModalWeight');
+  const qty = document.getElementById('quickModalQty');
+
+  if (img) img.src = convertDriveUrl(product.foto);
+  if (title) title.innerText = product.nama_series || product.nama;
+  if (weight) weight.innerText = `(Berat: ${product.berat || '1kg'})`;
+  if (qty) qty.value = '1';
+
+  selectQuickSize('S');
+
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function closeQuickAddModal() {
+  const modal = document.getElementById('quickAddModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function selectQuickSize(size) {
+  quickModalSelectedSize = size;
+  const buttons = document.querySelectorAll('.quick-size-btn');
+  buttons.forEach(btn => {
+    if (btn.innerText.trim() === size) {
+      btn.style.border = '2px solid #4F46E5';
+      btn.style.background = '#EEF2FF';
+      btn.style.color = '#4F46E5';
+    } else {
+      btn.style.border = '1px solid #cbd5e1';
+      btn.style.background = '#ffffff';
+      btn.style.color = '#334155';
+    }
+  });
+
+  if (quickModalProduct) {
+    const price = getVariantPrice(quickModalProduct, size);
+    const priceEl = document.getElementById('quickModalPrice');
+    if (priceEl) priceEl.innerText = formatRupiah(price);
+  }
+}
+
+function changeQuickQty(delta) {
+  const input = document.getElementById('quickModalQty');
+  if (input) {
+    let val = (parseInt(input.value) || 1) + delta;
+    if (val < 1) val = 1;
+    input.value = val;
+  }
+}
+
+function confirmQuickAddToCart() {
+  if (!quickModalProduct) return;
+  const qtyInput = document.getElementById('quickModalQty');
+  const qty = parseInt(qtyInput?.value) || 1;
+  const price = getVariantPrice(quickModalProduct, quickModalSelectedSize);
+
+  const productToAdd = {
+    ...quickModalProduct,
+    harga: price
+  };
+
+  addToCart(productToAdd, qty, quickModalSelectedSize, 'Standard');
+  closeQuickAddModal();
 }
 
 function getTotalCartWeight() {

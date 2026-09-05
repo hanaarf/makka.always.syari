@@ -228,9 +228,9 @@
 
       products.forEach(prod => {
         const imgUrl = convertDriveUrl(prod.foto);
-        const priceText = formatRupiah(prod.harga);
+        const priceText = formatProductPrice(prod);
         const category = (prod.kategori || 'abaya').toLowerCase();
-        const rawPrice = parseInt(prod.harga) || 0;
+        const priceRange = getProductPriceRange(prod);
 
         let badgeHtml = '';
         const status = (prod.status_code || '').toLowerCase();
@@ -243,12 +243,13 @@
         const card = document.createElement('article');
         card.className = 'product-card';
         card.setAttribute('data-category', category);
-        card.setAttribute('data-price', rawPrice);
+        card.setAttribute('data-price', priceRange.min);
 
+        const defaultPrice = getVariantPrice(prod, 'S') || priceRange.min;
         const productDataJson = JSON.stringify({
           id: prod.id,
           nama_series: prod.nama_series,
-          harga: prod.harga,
+          harga: defaultPrice,
           berat: prod.berat || '1kg',
           foto: prod.foto
         }).replace(/"/g, '&quot;');
@@ -273,10 +274,15 @@
           
           <div class="price"><span class="now">${priceText}</span></div>
           
-          <button onclick="addToCart(${productDataJson})" class="btn" style="width:100%; cursor:pointer;">
+          <button class="btn btn-add-cart" style="width:100%; cursor:pointer;">
             + Masukkan Keranjang
           </button>
         `;
+
+        const btnCart = card.querySelector('.btn-add-cart');
+        btnCart.addEventListener('click', () => {
+          openQuickAddToCart(prod);
+        });
 
         grid.appendChild(card);
       });
@@ -291,18 +297,18 @@
 
       let filtered = allProducts.filter(prod => {
         const cat = (prod.kategori || 'abaya').toLowerCase();
-        const price = parseInt(prod.harga) || 0;
+        const priceRange = getProductPriceRange(prod);
 
         const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(cat);
-        const matchPrice = price <= maxPrice;
+        const matchPrice = priceRange.min <= maxPrice;
 
         return matchCategory && matchPrice;
       });
 
       if (sortValue === 'price-low') {
-        filtered.sort((a, b) => (parseInt(a.harga) || 0) - (parseInt(b.harga) || 0));
+        filtered.sort((a, b) => getProductPriceRange(a).min - getProductPriceRange(b).min);
       } else if (sortValue === 'price-high') {
-        filtered.sort((a, b) => (parseInt(b.harga) || 0) - (parseInt(a.harga) || 0));
+        filtered.sort((a, b) => getProductPriceRange(b).max - getProductPriceRange(a).max);
       }
 
       renderProducts(filtered);
@@ -319,14 +325,14 @@
       applyProductFilters();
     }
 
-    // Inisialisasi: Render langsung dari SWR cache / snapshot (0ms loading!)
+    // Inisialisasi: Tampilkan data terbaru (paling bawah dari sheet) paling awal
     function initShop() {
-      allProducts = getProductsSync();
+      allProducts = getProductsSync().slice().reverse();
       applyProductFilters();
 
       // Sinkronisasi data terbaru di latar belakang secara hening
       fetchProductsRealtime((fresh) => {
-        allProducts = fresh;
+        allProducts = fresh.slice().reverse();
         applyProductFilters();
       });
     }

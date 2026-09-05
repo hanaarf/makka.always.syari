@@ -308,11 +308,13 @@
       if (!grid) return;
       grid.innerHTML = '';
 
-      const featuredProducts = products.slice(0, 8);
+      // Tampilkan data terbaru (paling bawah dari sheet) paling awal
+      const featuredProducts = products.slice().reverse().slice(0, 8);
 
       featuredProducts.forEach(prod => {
         const imgUrl = convertDriveUrl(prod.foto);
-        const priceText = formatRupiah(prod.harga);
+        const priceText = formatProductPrice(prod);
+        const priceRange = getProductPriceRange(prod);
 
         let badgeHtml = '';
         const status = (prod.status_code || '').toLowerCase();
@@ -325,10 +327,11 @@
         const card = document.createElement('article');
         card.className = 'product-card';
 
+        const defaultPrice = getVariantPrice(prod, 'S') || priceRange.min;
         const productObj = {
           id: prod.id,
           nama_series: prod.nama_series,
-          harga: prod.harga,
+          harga: defaultPrice,
           berat: prod.berat || '1kg',
           foto: prod.foto
         };
@@ -361,7 +364,7 @@
 
         const btnCart = card.querySelector('.btn-add-cart');
         btnCart.addEventListener('click', () => {
-          addToCart(productObj, 1, 'All Size', 'Standard');
+          openQuickAddToCart(prod);
         });
 
         grid.appendChild(card);
