@@ -2,15 +2,23 @@
 // PRODUK DATA & SWR CACHE MODULE (MAKKA ALWAYS SYARI)
 // =========================================================================
 
-const GSHEET_API_URL = "https://script.google.com/macros/s/AKfycbx8W31PTpYm-1pMBBiI0QUB0WIEiC72KOYBrsv2YWiz820OP1F6C8ma9bK3JgSsmeH8ig/exec";
-const CACHE_KEY_PRODUCTS = "makka_products_cache_v2";
-const CACHE_KEY_TIMESTAMP = "makka_products_timestamp_v2";
+const GSHEET_API_URL = "https://script.google.com/macros/s/AKfycbwE8HTvmeGbxJY5FfXNN28UlL3OR2CN9O-wlejG87bhdcnSpdqQsPF1BrvM9sc4hx5DkQ/exec";
+const CACHE_KEY_PRODUCTS = "makka_products_cache_v4";
+const CACHE_KEY_TIMESTAMP = "makka_products_timestamp_v4";
 
 // Default varian standar jika produk belum memiliki varian terdefinisi di spreadsheet
 const DEFAULT_VARIANTS = [
   { size: "S-M", harga: 455000, stock: 10 },
   { size: "L-XL", harga: 500000, stock: 10 }
 ];
+
+// Helper pembersih angka harga (bisa menangani string "400.000", "Rp 400000", atau number)
+function parseCleanNumber(val) {
+  if (typeof val === 'number') return val;
+  if (!val) return 0;
+  const cleaned = String(val).replace(/[^0-9]/g, '');
+  return parseInt(cleaned, 10) || 0;
+}
 
 // Snapshot data bawaan awal dengan multi-varian (S-M & L-XL)
 const INITIAL_PRODUCTS = [
@@ -125,6 +133,20 @@ const INITIAL_PRODUCTS = [
       { "size": "S-M", "harga": 455000, "stock": 10 },
       { "size": "L-XL", "harga": 500000, "stock": 10 }
     ]
+  },
+  {
+    "id": 9,
+    "nama_series": "Naima abaya",
+    "deskripsi": "Material bisa request bahan mazen anti uv, mina anti uv atau internet anti uv original sultan yaah..",
+    "berat": "1kg",
+    "foto": "https://drive.google.com/file/d/1Qdkw0Pvb14PPMzP9vTknDKJu6cBDVwaC/view?usp=sharing",
+    "kategori": "abaya",
+    "material": "sultan-uv",
+    "status_code": "po",
+    "variants": [
+      { "size": "S-M", "harga": 400000, "stock": 10 },
+      { "size": "L-XL", "harga": 550000, "stock": 10 }
+    ]
   }
 ];
 
@@ -141,7 +163,7 @@ function convertDriveUrl(url) {
 
 // Helper Format Currency Rupiah
 function formatRupiah(number) {
-  if (!number || number == 0 || isNaN(number)) return "Rp 455.000";
+  if (!number || number == 0 || isNaN(number)) return "Rp 400.000";
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -151,14 +173,14 @@ function formatRupiah(number) {
 
 // Helper Cari Harga Berdasarkan Pilihan Size (S, M, L, XL, S-M, L-XL)
 function getVariantPrice(prod, selectedSize) {
-  if (!prod) return 455000;
+  if (!prod) return 400000;
   
   const cleanSize = (selectedSize || 'S').toString().trim().toUpperCase();
 
   if (prod.variants && Array.isArray(prod.variants) && prod.variants.length > 0) {
     // 1. Cek kecocokan persis (misal 'S-M' atau 'L-XL' atau 'S')
     const exact = prod.variants.find(v => (v.size || '').toString().trim().toUpperCase() === cleanSize);
-    if (exact && parseInt(exact.harga) > 0) return parseInt(exact.harga);
+    if (exact && parseCleanNumber(exact.harga) > 0) return parseCleanNumber(exact.harga);
 
     // 2. Cek mapping size: S atau M -> varian S-M
     if (cleanSize === 'S' || cleanSize === 'M') {
@@ -166,7 +188,7 @@ function getVariantPrice(prod, selectedSize) {
         const s = (v.size || '').toString().toUpperCase();
         return s.includes('S-M') || s.includes('S/M') || s === 'S' || s === 'M';
       });
-      if (sm && parseInt(sm.harga) > 0) return parseInt(sm.harga);
+      if (sm && parseCleanNumber(sm.harga) > 0) return parseCleanNumber(sm.harga);
     }
 
     // 3. Cek mapping size: L atau XL -> varian L-XL
@@ -175,20 +197,20 @@ function getVariantPrice(prod, selectedSize) {
         const s = (v.size || '').toString().toUpperCase();
         return s.includes('L-XL') || s.includes('L/XL') || s === 'L' || s === 'XL';
       });
-      if (lxl && parseInt(lxl.harga) > 0) return parseInt(lxl.harga);
+      if (lxl && parseCleanNumber(lxl.harga) > 0) return parseCleanNumber(lxl.harga);
     }
 
-    // 4. Fallback ke varian pertama yang memiliki harga
-    const firstValid = prod.variants.find(v => parseInt(v.harga) > 0);
-    if (firstValid) return parseInt(firstValid.harga);
+    // 4. Fallback ke varian pertama yang memiliki harga valid
+    const firstValid = prod.variants.find(v => parseCleanNumber(v.harga) > 0);
+    if (firstValid) return parseCleanNumber(firstValid.harga);
   }
 
-  // Fallback jika ada harga satuan langsung
-  if (prod.harga && parseInt(prod.harga) > 0) {
-    return parseInt(prod.harga);
+  // Fallback jika ada harga satuan langsung di produk
+  if (prod.harga && parseCleanNumber(prod.harga) > 0) {
+    return parseCleanNumber(prod.harga);
   }
 
-  // Default harga termurah S-M jika data belum lengkap
+  // Default harga jika belum terdefinisi
   return (cleanSize === 'L' || cleanSize === 'XL') ? 500000 : 455000;
 }
 
@@ -203,7 +225,6 @@ function getProductPriceRange(prod) {
 }
 
 // Helper Format Harga untuk Kartu Produk / Halaman Katalog & Home
-// Sesuai permintaan: Menampilkan harga pertama (ukuran S-M yang termurah)
 function formatProductPrice(prod) {
   const defaultPrice = getVariantPrice(prod, 'S');
   return formatRupiah(defaultPrice);
@@ -217,11 +238,15 @@ function normalizeProducts(rawList) {
     let variants = [];
 
     if (Array.isArray(item.variants) && item.variants.length > 0) {
-      variants = item.variants;
-    } else if (item.harga && parseInt(item.harga) > 0) {
+      variants = item.variants.map(v => ({
+        ...v,
+        harga: parseCleanNumber(v.harga)
+      }));
+    } else if (item.harga && parseCleanNumber(item.harga) > 0) {
+      const basePrice = parseCleanNumber(item.harga);
       variants = [
-        { size: 'S-M', harga: parseInt(item.harga), stock: 10 },
-        { size: 'L-XL', harga: parseInt(item.harga) + 45000, stock: 10 }
+        { size: 'S-M', harga: basePrice, stock: 10 },
+        { size: 'L-XL', harga: basePrice + 45000, stock: 10 }
       ];
     } else {
       // Fallback default varian harga jika sheet varian belum ter-deploy di Apps Script
@@ -263,11 +288,14 @@ async function fetchProductsRealtime(onSuccess, onError) {
 
     let freshProducts = [];
     if (Array.isArray(rawData)) {
+      // Cek apakah array ini sudah berisi variants atau produk raw
       freshProducts = normalizeProducts(rawData);
-    } else if (rawData && Array.isArray(rawData.products)) {
-      const variants = Array.isArray(rawData.variants) ? rawData.variants : [];
-      freshProducts = rawData.products.map(p => {
-        const prodVariants = variants.filter(v => String(v.product_id) === String(p.id));
+    } else if (rawData && (Array.isArray(rawData.products) || Array.isArray(rawData.data))) {
+      const productsList = Array.isArray(rawData.products) ? rawData.products : rawData.data;
+      const variantsList = Array.isArray(rawData.variants) ? rawData.variants : (Array.isArray(rawData.product_variants) ? rawData.product_variants : []);
+      
+      freshProducts = productsList.map(p => {
+        const prodVariants = variantsList.filter(v => String(v.product_id).trim() === String(p.id).trim());
         return {
           ...p,
           variants: prodVariants.length > 0 ? prodVariants : (p.variants || [])
